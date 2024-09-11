@@ -5,7 +5,7 @@ int main() {
     int totalcost, sum = 0, coin, change;
     fp = fopen("input.txt", "r");
     if (fp == NULL) {
-        printf("无此文件。\n");
+        printf("鏃犺鍟嗗搧\n");
         return 1;
     }
 
@@ -18,7 +18,7 @@ int main() {
     }
 
     change = sum- totalcost;
-    printf("找零金额: %d 元\n", change);
+    printf("鎵鹃浂%d\n", change);
     fclose(fp);
     return 0;
 }
