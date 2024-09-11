@@ -7,12 +7,12 @@ typedef struct {
     char type;
     int channel_sequence;
     int number;
-} History;//²Ù×÷ÀúÊ· 
+} History;//æ“ä½œå†å² 
 
 History history[MAX_HISTORY];
-int history_index = -1; // ÓÃÓÚ¸ú×ÙÕ»¶¥Î»ÖÃ
+int history_index = -1; // ç”¨äºè·Ÿè¸ªæ ˆé¡¶ä½ç½®
 
-// ¶¨ÒåÒ»¸öÕÒµ½ÉÌÆ·¶ÔÓ¦»õ¼ÜµÄº¯Êı 
+// å®šä¹‰ä¸€ä¸ªæ‰¾åˆ°å•†å“å¯¹åº”è´§æ¶çš„å‡½æ•° 
 int find_by_type(struct Goods machine[], char type) {
     for (int i = 0; i < 5; i++) {
         if (type == machine[i].goods_type) {
@@ -34,17 +34,17 @@ typedef enum {
 } State;
 
 void process_buy(struct Goods machine[], int channel_number[], int channel_sequence, int *sum) {
-    char type; // ÉùÃ÷ type ±äÁ¿
+    char type; // å£°æ˜ type å˜é‡
     int number;
     printf("enter the number you buy:");
     scanf("%d", &number);
     channel_number[channel_sequence] -= number;
     *sum = number * machine[channel_sequence].price;
-    *sum = charge_coin(*sum); // ½ÓÊÕ charge_coin º¯Êı·µ»ØµÄÕÒÁã½ğ¶î 
-    printf("×îÖÕÕÒÁã: %dÔª\n", *sum); // ´òÓ¡×îÖÕÕÒÁã½ğ¶î 
-    // ¼ÇÂ¼²Ù×÷ÀúÊ·
+    *sum = charge_coin(*sum); // æ¥æ”¶ charge_coin å‡½æ•°è¿”å›çš„æ‰¾é›¶é‡‘é¢ 
+    printf("æœ€ç»ˆæ‰¾é›¶: %då…ƒ\n", *sum); // æ‰“å°æœ€ç»ˆæ‰¾é›¶é‡‘é¢ 
+    // è®°å½•æ“ä½œå†å²
     if (history_index < MAX_HISTORY - 1) {
-        history[++history_index] = (History){type, channel_sequence, number}; // ´Ë´¦ĞŞÕı
+        history[++history_index] = (History){type, channel_sequence, number}; 
     }
 }
 
@@ -52,8 +52,8 @@ int main() {
     State state = START;
     int number, sum, channel_sequence;
     char type, buy_or_store;
-    struct Goods machine[5];  // ¼ÙÉèÕâÀïÒÑ¾­³õÊ¼»¯ÁËÉÌÆ·ĞÅÏ¢
-    int channel_number[5] = {0, 0, 0, 0, 0};  // ³õÊ¼»¯¶¼ÊÇ0
+    struct Goods machine[5];  
+    int channel_number[5] = {0, 0, 0, 0, 0};  // åˆå§‹åŒ–éƒ½æ˜¯0
 
     while (state != END) {
         switch (state) {
@@ -72,25 +72,25 @@ int main() {
                 break;
             case BACK:
                 if (history_index >= 0) {
-                    // ³·Ïú²Ù×÷
+                    // æ’¤é”€æ“ä½œ
                     History h = history[history_index--];
                     type = h.type; 
                     channel_sequence = h.channel_sequence;
                     number = h.number;
-                    channel_number[channel_sequence] += number; // ³·Ïú¹ºÂò
-                    printf("²Ù×÷ÒÑ³·Ïú\n");
+                    channel_number[channel_sequence] += number; // æ’¤é”€è´­ä¹°
+                    printf("æ“ä½œå·²æ’¤é”€\n");
                     if (history_index == -1) {
-                        printf("ÎŞ·¨½øÒ»²½»ØÍË\n");
+                        printf("æ— æ³•è¿›ä¸€æ­¥å›é€€\n");
                     }
                 } else {
-                    printf("Ã»ÓĞ¿É»ØÍËµÄ²Ù×÷\n");
+                    printf("æ²¡æœ‰å¯å›é€€çš„æ“ä½œ\n");
                 }
-                state = START; // ·µ»Ø³õÊ¼×´Ì¬
+                state = START; // è¿”å›åˆå§‹çŠ¶æ€
                 break;
             case STORE:
-                mai(); // µ÷ÓÃ mai º¯Êı£¬ÔÚ1-1ÖĞ 
+                mai(); // è°ƒç”¨ mai å‡½æ•°ï¼Œåœ¨1-1ä¸­ 
             case CONTINUE_STORE:
-                printf("ÊÇ·ñ¼ÌĞø´æÈë£¿(y/n): ");
+                printf("æ˜¯å¦ç»§ç»­å­˜å…¥ï¼Ÿ(y/n): ");
                 char store_or_not;
                 scanf(" %c", &store_or_not);
                 if (store_or_not == 'y') {
@@ -104,7 +104,7 @@ int main() {
                 scanf(" %c", &type);
                 channel_sequence = find_by_type(machine, type);
                 if (channel_sequence == -1) {
-                    printf("ÎŞ¸ÃÉÌÆ·\n");
+                    printf("æ— è¯¥å•†å“\n");
                     state = END;
                 } else {
                     process_buy(machine, channel_number, channel_sequence, &sum); 
@@ -116,7 +116,7 @@ int main() {
                 }
                 break;
             case OUT_OF_STOCK:
-                printf("¸ÃÉÌÆ·ÒÑÊÛóÀ£¬ÊÇ·ñ¼ÌĞø¹ºÂòÆäËûÉÌÆ·£¿(y/n): ");
+                printf("è¯¥å•†å“å·²å”®ç½„ï¼Œæ˜¯å¦ç»§ç»­è´­ä¹°å…¶ä»–å•†å“ï¼Ÿ(y/n): ");
                 char choice;
                 scanf(" %c", &choice);
                 if (choice == 'y') {
@@ -126,7 +126,7 @@ int main() {
                 }
                 break;
             case CONTINUE_BUY:
-                printf("ÊÇ·ñ¼ÌĞø¹ºÂò£¿(y/n): ");
+                printf("æ˜¯å¦ç»§ç»­è´­ä¹°ï¼Ÿ(y/n): ");
                 char buy_or_not;
                 scanf(" %c", &buy_or_not);
                 if (buy_or_not == 'y') {
@@ -136,7 +136,7 @@ int main() {
                 }
                 break;
             case END:
-                printf("½»Ò×½áÊø¡£\n");
+                printf("äº¤æ˜“ç»“æŸã€‚\n");
                 break;
         }
         
