@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 struct Goods {
     char goods_type;
@@ -15,42 +16,44 @@ void place_goods(int channel, char goods_type, int price, int quantity) {
     if (channel >= 1 && channel <= 5) {
         channel_number[channel - 1] += quantity;
         machine[channel - 1] = (struct Goods){goods_type, channel, price, quantity};
-        printf("%d %c£º", channel, goods_type);
+        printf("%d %cï¼š", channel, goods_type);
         for (int i = 0; i < quantity; i++) {
             printf("%c", goods_type);
         }
         printf(" %d\n", price);
     } else {
-        printf("Ã»ÓÐ¸ÃÍ¨µÀ¡£\n");
+        printf("æ²¡æœ‰è¯¥é€šé“ã€‚\n");
     }
 }
 
 int check_int() {
     int num;
     if (scanf("%d", &num) != 1) {
-        printf("ÇëÊäÈëÒ»¸öÕûÊý£º\n");
-        while (getchar() != '\n'); // Çå¿Õ»º³åÇø
-        return 0; // Ê§°Ü
+        printf("è¯·è¾“å…¥ä¸€ä¸ªæ•´æ•°ï¼š\n");
+        while (getchar() != '\n'); // æ¸…ç©ºç¼“å†²åŒº
+        return 0; // å¤±è´¥
     }
-    while (getchar() != '\n'); // Çå¿Õ»º³åÇø
-    return num; // ³É¹¦
+    while (getchar() != '\n'); // æ¸…ç©ºç¼“å†²åŒº
+    return num; // æˆåŠŸ
 }
 
 int check_char() {
     char word;
     if (scanf(" %c", &word) != 1) {
-        printf("ÇëÊäÈëÒ»¸ö×Ö·û£º\n");
-        while (getchar() != '\n'); // Çå¿Õ»º³åÇø
-        return 0; // Ê§°Ü
+        printf("è¯·è¾“å…¥ä¸€ä¸ªå­—ç¬¦ï¼š\n");
+        while (getchar() != '\n'); // æ¸…ç©ºç¼“å†²åŒº
+        return 0; // å¤±è´¥
     }
-    return word; // ³É¹¦
+    return word; // æˆåŠŸ
 }
 
 int main() {
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     int channel, price, quantity;
     char goods_type;
 
-    printf("Çë°´´ÎÐòÊäÈëÍ¨µÀ£¬»õÎïÃû³Æ£¬»õÎï¼ÛÇ®£¬»õÎïÊýÁ¿£º\n");
+    printf("è¯·æŒ‰æ¬¡åºè¾“å…¥é€šé“ï¼Œè´§ç‰©åç§°ï¼Œè´§ç‰©ä»·é’±ï¼Œè´§ç‰©æ•°é‡ï¼š\n");
     channel = check_int();
     goods_type = check_char();
     price = check_int();
