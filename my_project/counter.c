@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "1-1.h"
 #include "1-2.h"
+#include <windows.h>
 #define MAX_HISTORY 3
 
 typedef struct {
@@ -49,6 +50,8 @@ void process_buy(struct Goods machine[], int channel_number[], int channel_seque
 }
 
 int main() {
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     State state = START;
     int number, sum, channel_sequence;
     char type, buy_or_store;
