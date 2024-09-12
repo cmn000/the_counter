@@ -1,31 +1,34 @@
 #include <stdio.h>
+#include <windows.h>
 
 int charge_coin(int totalcost) {
     int sum = 0, coin, change;
 
     while (sum < totalcost) {
-        printf("ÇëÊäÈëÍ¶±Ò½ð¶î£¨1, 2, 5Ôª£©: ");
+        printf("è¯·è¾“å…¥æŠ•å¸é‡‘é¢ï¼ˆ1, 2, 5å…ƒï¼‰: ");
         scanf("%d", &coin);
         if (coin != 1 && coin != 2 && coin != 5) {
-            printf("ÎÞÐ§Í¶±Ò½ð¶î¡£\n");
+            printf("æ— æ•ˆæŠ•å¸é‡‘é¢ã€‚\n");
             continue;
         }
         sum += coin;
     }
 
     change = sum - totalcost;
-    printf("ÕÒÁã: %dÔª\n", change);
-    return change; // ·µ»ØÕÒÁã½ð¶î
+    printf("æ‰¾é›¶: %då…ƒ\n", change);
+    return change; // è¿”å›žæ‰¾é›¶é‡‘é¢
 }
 
 int main() {
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     int total, remain;
 
-    printf("ÇëÊäÈë×Ü½ð¶î: ");
-    scanf(" %d", &total); // Ê¹ÓÃ & À´»ñÈ¡ÓÃ»§ÊäÈëµÄµØÖ·
-    remain = charge_coin(total); // ½ÓÊÕ charge_coin º¯Êý·µ»ØµÄÕÒÁã½ð¶î
+    printf("è¯·è¾“å…¥æ€»é‡‘é¢: ");
+    scanf(" %d", &total); // ä½¿ç”¨ & æ¥èŽ·å–ç”¨æˆ·è¾“å…¥çš„åœ°å€
+    remain = charge_coin(total); // æŽ¥æ”¶ charge_coin å‡½æ•°è¿”å›žçš„æ‰¾é›¶é‡‘é¢
 
-    printf("×îÖÕÕÒÁã: %dÔª\n", remain); // ´òÓ¡×îÖÕÕÒÁã½ð¶î
+    printf("æœ€ç»ˆæ‰¾é›¶: %då…ƒ\n", remain); // æ‰“å°æœ€ç»ˆæ‰¾é›¶é‡‘é¢
 
     return 0;
 }
