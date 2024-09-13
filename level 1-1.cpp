@@ -22,14 +22,14 @@ void place_goods(int channel, char goods_type, int price, int quantity) {
         }
         printf(" %d\n", price);
     } else {
-        printf("没有该通道。\n");
+        printf("no such channel。\n");
     }
 }
 
 int check_int() {
     int num;
     if (scanf("%d", &num) != 1) {
-        printf("请输入一个整数：\n");
+        printf("enter an int：\n");
         while (getchar() != '\n'); // 清空缓冲区
         return 0; // 失败
     }
@@ -40,7 +40,7 @@ int check_int() {
 int check_char() {
     char word;
     if (scanf(" %c", &word) != 1) {
-        printf("请输入一个字符：\n");
+        printf("enter the name：\n");
         while (getchar() != '\n'); // 清空缓冲区
         return 0; // 失败
     }
@@ -49,11 +49,11 @@ int check_char() {
 
 int main() {
     SetConsoleCP(CP_UTF8);
-    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8)
     int channel, price, quantity;
     char goods_type;
 
-    printf("请按次序输入通道，货物名称，货物价钱，货物数量：\n");
+    printf("enter the channel,commodity name,price and number in turn：\n");
     channel = check_int();
     goods_type = check_char();
     price = check_int();
