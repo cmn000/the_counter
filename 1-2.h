@@ -1,32 +1,32 @@
+
 #include <stdio.h>
 
 int charge_coin(int totalcost) {
     int sum = 0, coin, change;
 
     while (sum < totalcost) {
-        printf("ÇëÊäÈëÍ¶±Ò½ð¶î£¨1, 2, 5Ôª£©: ");
+        printf("enter the change numberï¼ˆ1, 2, 5yuanï¼‰: ");
         scanf("%d", &coin);
         if (coin != 1 && coin != 2 && coin != 5) {
-            printf("ÎÞÐ§Í¶±Ò½ð¶î¡£\n");
+            printf("do not have such changeã€‚\n");
             continue;
         }
         sum += coin;
     }
 
     change = sum - totalcost;
-    printf("ÕÒÁã: %dÔª\n", change);
-    return change; // ·µ»ØÕÒÁã½ð¶î
+    printf("return change: %dyuan\n", change);
+    return change; // è¿”å›žæ‰¾é›¶é‡‘é¢
 }; 
 
 int ma () {
     int total, remain;
 
-    printf("ÇëÊäÈë×Ü½ð¶î: ");
+    printf("enter the sum cost: ");
     scanf(" %d", &total); // 
-    remain = charge_coin(total); // ½ÓÊÕ charge_coin º¯Êý·µ»ØµÄÕÒÁã½ð¶î
+    remain = charge_coin(total); // æŽ¥æ”¶ charge_coin å‡½æ•°è¿”å›žçš„æ‰¾é›¶é‡‘é¢
 
-    printf("×îÖÕÕÒÁã: %dÔª\n", remain); // ´òÓ¡×îÖÕÕÒÁã½ð¶î
+    printf("finnel change: %dyuan\n", remain); // æ‰“å°æœ€ç»ˆæ‰¾é›¶é‡‘é¢
 
     return 0;
 }
-
