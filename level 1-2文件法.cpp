@@ -8,7 +8,7 @@ int main() {
     int totalcost, sum = 0, coin, change;
     fp = fopen("input.txt", "r");
     if (fp == NULL) {
-        printf("无该商品\n");
+        printf("do not have such commodity\n");
         return 1;
     }
 
@@ -21,7 +21,7 @@ int main() {
     }
 
     change = sum- totalcost;
-    printf("找零%d\n", change);
+    printf("return change%d\n", change);
     fclose(fp);
     return 0;
 }
