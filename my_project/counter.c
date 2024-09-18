@@ -45,7 +45,7 @@ void process_buy(struct Goods machine[], int channel_number[], int channel_seque
     printf("finnel change: %dyuan\n", *sum); // 打印最终找零金额 
     // 记录操作历史
     if (history_index < MAX_HISTORY - 1) {
-        history[++history_index] = (History){type, channel_sequence, number}; // 此处修正
+        history[++history_index] = (History){type, channel_sequence, number};
     }
 }
 
