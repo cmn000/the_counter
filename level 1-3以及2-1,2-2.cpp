@@ -56,14 +56,14 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     State state = START;
     int number, sum, channel_sequence;
-    char type;
+    char type，choose[10];
     struct Goods machine[5];  // 假设这里已经初始化了商品信息
     int channel_number[5] = {0, 0, 0, 0, 0};  // 初始化都是0
 
     while (state != END) {
         switch (state) {
             case START:
-            	char choose[10];
+            	
                 printf("enter buy, store, or back:");
                 scanf(" %5c", &choose);
                 if (strlen(choose)==3&&choose[0]=='b'&&choose[1]=='u'&&choose[2]=='y') {
