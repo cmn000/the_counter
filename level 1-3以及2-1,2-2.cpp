@@ -1,9 +1,10 @@
-
 #include <stdio.h>
+#include <string.h>
+#include <windows.h> 
 #include "1-1.h"
 #include "1-2.h"
-#include <windows.h>
 #define MAX_HISTORY 3
+ 
 
 typedef struct {
     char type;
@@ -43,32 +44,33 @@ void process_buy(struct Goods machine[], int channel_number[], int channel_seque
     channel_number[channel_sequence] -= number;
     *sum = number * machine[channel_sequence].price;
     *sum = charge_coin(*sum); // 接收 charge_coin 函数返回的找零金额 
-    printf("finnel change: %dyuan\n", *sum); // 打印最终找零金额 
+    printf("最终找零: %d元\n", *sum); // 打印最终找零金额 
     // 记录操作历史
     if (history_index < MAX_HISTORY - 1) {
-        history[++history_index] = (History){type, channel_sequence, number}; // 此处修正
+        history[++history_index] = (History){type, channel_sequence, number}; 
     }
 }
 
 int main() {
-    SetConsoleCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
     State state = START;
     int number, sum, channel_sequence;
-    char type, buy_or_store;
+    char type;
     struct Goods machine[5];  // 假设这里已经初始化了商品信息
     int channel_number[5] = {0, 0, 0, 0, 0};  // 初始化都是0
 
     while (state != END) {
         switch (state) {
             case START:
-                printf("enter buy, store, or back(b/s/k):");
-                scanf(" %c", &buy_or_store);
-                if (buy_or_store == 'b') {
+            	char choose[10];
+                printf("enter buy, store, or back:");
+                scanf(" %5c", &choose);
+                if (strlen(choose)==3&&choose[0]=='b'&&choose[1]=='u'&&choose[2]=='y') {
                     state = BUY;
-                } else if (buy_or_store == 's') {
+                } else if (strlen(choose)==5&& choose[0] == 's' && choose[1] == 't' && choose[2] == 'o' && choose[3] == 'r' && choose[4] == 'e') {
                     state = STORE;
-                } else if (buy_or_store == 'k') {
+                } else if (strlen(choose)==4&& choose[0] == 'b' && choose[1] == 'a' && choose[2] == 'c' && choose[3] == 'k') {
                     state = BACK;
                 } else {
                     state = END;
@@ -82,19 +84,19 @@ int main() {
                     channel_sequence = h.channel_sequence;
                     number = h.number;
                     channel_number[channel_sequence] += number; // 撤销购买
-                    printf("execution has been canceled\n");
+                    printf("操作已撤销\n");
                     if (history_index == -1) {
-                        printf("unable to return\n");
+                        printf("无法进一步回退\n");
                     }
                 } else {
-                    printf("do not have an execution to return\n");
+                    printf("没有可回退的操作\n");
                 }
                 state = START; // 返回初始状态
                 break;
             case STORE:
                 mai(); // 调用 mai 函数，在1-1中 
             case CONTINUE_STORE:
-                printf("store or not？(y/n): ");
+                printf("是否继续存入？(y/n): ");
                 char store_or_not;
                 scanf(" %c", &store_or_not);
                 if (store_or_not == 'y') {
@@ -108,7 +110,7 @@ int main() {
                 scanf(" %c", &type);
                 channel_sequence = find_by_type(machine, type);
                 if (channel_sequence == -1) {
-                    printf("no such commodity\n");
+                    printf("无该商品\n");
                     state = END;
                 } else {
                     process_buy(machine, channel_number, channel_sequence, &sum); 
@@ -120,17 +122,17 @@ int main() {
                 }
                 break;
             case OUT_OF_STOCK:
-                printf("the commodity is out of stock,countinue buy or not？(y/n): ");
+                printf("该商品已售罄，是否继续购买其他商品？(y/n): ");
                 char choice;
                 scanf(" %c", &choice);
                 if (choice == 'y') {
-                    state = BUY;
+                    state = START;
                 } else {
                     state = END;
                 }
                 break;
             case CONTINUE_BUY:
-                printf("countinue by or not？(y/n): ");
+                printf("是否继续购买？(y/n): ");
                 char buy_or_not;
                 scanf(" %c", &buy_or_not);
                 if (buy_or_not == 'y') {
@@ -140,7 +142,7 @@ int main() {
                 }
                 break;
             case END:
-                printf("transaction is completed。\n");
+                printf("交易结束。\n");
                 break;
         }
         
