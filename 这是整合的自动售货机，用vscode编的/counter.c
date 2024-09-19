@@ -56,7 +56,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     State state = START;
     int number, sum, channel_sequence;
-    char type,choose[10];;
+    char type,choose[10];
     struct Goods machine[5];  // 假设这里已经初始化了商品信息
     int channel_number[5] = {0, 0, 0, 0, 0};  // 初始化都是0
 
@@ -102,7 +102,7 @@ int main() {
                 if (store_or_not == 'y') {
                     state = STORE;
                 } else {
-                    state = END;
+                    state = START;
                 }
                 break;
             case BUY:
@@ -111,7 +111,7 @@ int main() {
                 channel_sequence = find_by_type(machine, type);
                 if (channel_sequence == -1) {
                     printf("无该商品\n");
-                    state = END;
+                    state = START;
                 } else {
                     process_buy(machine, channel_number, channel_sequence, &sum); 
                     if (channel_number[channel_sequence] > 0) {
