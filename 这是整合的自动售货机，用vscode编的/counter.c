@@ -4,12 +4,14 @@
 #include "1-1.h"
 #include "1-2.h"
 #define MAX_HISTORY 3
+Goods machine[5]={0,0,0,0,0};
  
 
 typedef struct {
     char type;
     int channel_sequence;
     int number;
+    int sum;
 } History;//操作历史 
 
 History history[MAX_HISTORY];
@@ -36,18 +38,17 @@ typedef enum {
     END
 } State;
 
-void process_buy(struct Goods machine[], int channel_number[], int channel_sequence, int *sum) {
+void process_buy(struct Goods machine[], int channel_number[], int channel_sequence, int sum) {
     char type; // 声明 type 变量
-    int number;
+    int number,remain;
     printf("enter the number you buy:");
     scanf("%d", &number);
-    channel_number[channel_sequence] -= number;
-    *sum = number * machine[channel_sequence].price;
-    *sum = charge_coin(*sum); // 接收 charge_coin 函数返回的找零金额 
-    printf("最终找零: %d元\n", *sum); // 打印最终找零金额 
+    machine[channel_sequence-1].quantity -= number;
+    sum = number * machine[channel_sequence-1].price;
+    remain = charge_coin(sum); // 接收 charge_coin 函数返回的找零金额  
     // 记录操作历史
     if (history_index < MAX_HISTORY - 1) {
-        history[++history_index] = (History){type, channel_sequence, number}; 
+        history[++history_index] = (History){type, channel_sequence, number,sum}; 
     }
 }
 
@@ -57,7 +58,6 @@ int main() {
     State state = START;
     int number, sum, channel_sequence;
     char type,choose[10];
-    struct Goods machine[5];  // 假设这里已经初始化了商品信息
     int channel_number[5] = {0, 0, 0, 0, 0};  // 初始化都是0
 
     while (state != END) {
@@ -83,8 +83,9 @@ int main() {
                     type = h.type; 
                     channel_sequence = h.channel_sequence;
                     number = h.number;
-                    channel_number[channel_sequence] += number; // 撤销购买
-                    printf("操作已撤销\n");
+                    sum=h.sum;
+                    machine[channel_sequence-1].quantity += number; // 撤销购买
+                    printf("操作已撤销,退回%d元\n",sum);
                     if (history_index == -1) {
                         printf("无法进一步回退\n");
                     }
@@ -108,13 +109,13 @@ int main() {
             case BUY:
                 printf("enter the type:");
                 scanf(" %c", &type);
-                channel_sequence = find_by_type(machine, type);
+                channel_sequence = find_by_type(machine, type)+1;
                 if (channel_sequence == -1) {
                     printf("无该商品\n");
                     state = START;
                 } else {
-                    process_buy(machine, channel_number, channel_sequence, &sum); 
-                    if (channel_number[channel_sequence] > 0) {
+                    process_buy(machine, channel_number, channel_sequence, sum); 
+                    if (machine[channel_sequence-1].quantity >=0) {
                         state = CONTINUE_BUY;
                     } else {
                         state = OUT_OF_STOCK;
@@ -126,9 +127,9 @@ int main() {
                 char choice;
                 scanf(" %c", &choice);
                 if (choice == 'y') {
-                    state = START;
+                    state = BUY;
                 } else {
-                    state = END;
+                    state = START;
                 }
                 break;
             case CONTINUE_BUY:
@@ -138,11 +139,11 @@ int main() {
                 if (buy_or_not == 'y') {
                     state = BUY;
                 } else {
-                    state = END;
+                    state = START;
                 }
                 break;
             case END:
-                printf("交易结束。\n");
+                printf("结束。\n");
                 break;
         }
         
