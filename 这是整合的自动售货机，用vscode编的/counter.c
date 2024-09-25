@@ -18,14 +18,7 @@ History history[MAX_HISTORY];
 int history_index = -1; // 用于跟踪栈顶位置
 
 // 定义一个找到商品对应货架的函数 
-int find_by_type(struct Goods machine[], char type) {
-    for (int i = 0; i < 5; i++) {
-        if (type == machine[i].goods_type) {
-            return i;
-        }
-    }
-    return -1;
-}
+
 
 typedef enum {
     START,
@@ -47,16 +40,17 @@ void process_buy(struct Goods machine[], int channel_number[], int channel_seque
     sum = number * machine[channel_sequence-1].price;
     remain = charge_coin(sum); // 接收 charge_coin 函数返回的找零金额  
     // 记录操作历史
-    if (history_index < MAX_HISTORY - 1) {
-        history[++history_index] = (History){type, channel_sequence, number,sum}; 
-    }
+    
+    history_index ++;
+    history[history_index] = (History){type, channel_sequence, number,sum}; 
+    
 }
 
 int main() {
 	SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
     State state = START;
-    int number, sum, channel_sequence;
+    int number, sum, channel_sequence,back_num=0;;
     char type,choose[10];
     int channel_number[5] = {0, 0, 0, 0, 0};  // 初始化都是0
 
@@ -77,18 +71,22 @@ int main() {
                 }
                 break;
             case BACK:
-                if (history_index >= 0) {
+            
+                 if (history_index >= 0) {
                     // 撤销操作
-                    History h = history[history_index--];
-                    type = h.type; 
-                    channel_sequence = h.channel_sequence;
-                    number = h.number;
-                    sum=h.sum;
-                    machine[channel_sequence-1].quantity += number; // 撤销购买
-                    printf("操作已撤销,退回%d元\n",sum);
-                    if (history_index == -1) {
+                    if(back_num<3){
+                        History h = history[history_index--];
+                        type = h.type; 
+                        channel_sequence = h.channel_sequence;
+                        number = h.number;
+                        sum=h.sum;
+                        channel_number[channel_sequence] += number; // 撤销购买
+                        printf("操作已撤销,退回%d元\n",sum);
+                        back_num++;
+                    }else{
                         printf("无法进一步回退\n");
                     }
+
                 } else {
                     printf("没有可回退的操作\n");
                 }
@@ -109,7 +107,7 @@ int main() {
             case BUY:
                 printf("enter the type:");
                 scanf(" %c", &type);
-                channel_sequence = find_by_type(machine, type)+1;
+                channel_sequence = find_by_type(machine, type)+1;//在1-1.h里
                 if (channel_sequence == -1) {
                     printf("无该商品\n");
                     state = START;

@@ -2,10 +2,10 @@
 
 
 int charge_coin(int totalcost) {
-    int sum = 0, coin, change;
+    int sum = 0, coin, change;//sum来算投入钱的总和
 
     while (sum < totalcost) {
-        printf("请输入投币金额（1, 2, 5元）: ");
+        printf("请输入投币金额（1, 2, 5元）: ");//判断是不是正常的钱数
         scanf("%d", &coin);
         if (coin != 1 && coin != 2 && coin != 5) {
             printf("无效投币金额。\n");
